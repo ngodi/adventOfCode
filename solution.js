@@ -999,3 +999,17 @@ const arrayFrequency = frequency.split('\n').map(number => parseInt(number));
 const result = arrayFrequency.reduce((a ,b) => (a + b) , 0);
 
 console.log(result);
+
+//part 2
+
+let trackedArray = [],
+currentFrequency = 0,
+index =0 ;
+while (!trackedArray.includes(currentFrequency)) {
+    trackedArray.push(currentFrequency);
+    currentFrequency +=  arrayFrequency[index];
+    index = index < arrayFrequency.length-1 ? index +1 : 0;
+}
+console.log('Part two - ', currentFrequency)
+ 
+   
