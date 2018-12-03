@@ -1397,6 +1397,8 @@ var input = `#1 @ 669,271: 17x11
 #1397 @ 453,308: 19x24
 #1398 @ 238,370: 21x18
 #1399 @ 724,519: 23x10`;
+
+
 var strArr = input.split('\n');
 
 
@@ -1405,9 +1407,9 @@ var arr = elem.replace(/#|\s|@|,|:|x/g,' ').split(/\s+/g);
 
 var leftSpace = parseInt(arr[2]);
 var width = parseInt(arr[4]);
-
 var topSpace = parseInt(arr[3]);
 var height = parseInt(arr[5]);
+
 
 
 var claim = new Array(1000).fill(0).map(() => new Array(1000).fill(0));
@@ -1423,27 +1425,97 @@ for(var i = topSpace;i< topSpace +height;i++){
 return claim;
 }
 
+function getId(elem){
+var arr = elem.replace(/#|\s|@|,|:|x/g,' ').split(/\s+/g);
+
+id = parseInt(arr[1]);
+return id;
+}
 
 var sum = new Array(1000).fill(0).map(() => new Array(1000).fill(0));
 var newArr = [];
 strArr.forEach(function(element){
 newArr = makeArr(element);
 
-for(var i = 0;i<sum.length;i++){
-	for(var j = 0;j<sum.length;j++){
-		sum[i][j] += newArr[i][j];
-	}
-}
+  addArrays(sum,newArr);
 
 });
 
-var count = 0;
-for(var i = 0;i<sum.length;i++){
-	for(var j = 0;j<sum.length;j++){
-		if(sum[i][j] > 1){
-			count++;
-		}
+
+
+//functions
+
+
+function addArrays(arr1,arr2){
+for(var i = 0;i<arr1.length;i++){
+	for(var j = 0;j<arr1.length;j++){
+		arr1[i][j] += arr2[i][j];
 	}
+ }
+ return arr1;
 }
 
-console.log(count);
+
+function findOverlap(val){
+	var count = 0;
+
+for(var i = 0;i<val.length;i++){
+	for(var j = 0;j<val.length;j++){
+		if(val[i][j] > 1){
+			count++;
+		
+		}
+	}
+ }
+ return count;
+}
+
+console.log(findOverlap(sum));
+
+
+//Part2
+//using current value of sum
+var first = [];
+
+
+var big = [];
+var sum2 = [];
+
+strArr.forEach((function(element){
+var total = [];
+
+sum2 = new Array(1000).fill(1).map(() => new Array(1000).fill(1));
+for(var i = 0;i<sum2.length;i++){
+	for(var j = 0;j<sum2.length;j++){
+		
+			sum2[i][j] = sum[i][j];
+		
+	}
+ }
+
+
+first = makeArr(element);
+var id = getId(element);
+  addArrays(sum2,first);
+
+
+
+
+
+
+  for(var i = 0;i<sum.length;i++){
+	for(var j = 0;j<sum.length;j++){
+		if(sum[i][j] > 1){
+			
+		   total.push(sum[i][j] === sum2[i][j]);
+		}
+
+	}
+
+ }
+
+if(!total.includes(false)){
+	console.log(id);
+}
+
+}));
